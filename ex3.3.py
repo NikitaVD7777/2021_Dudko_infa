@@ -8,7 +8,8 @@ SnoopDogg = pygame.Surface((600, 800))
 SnoopDogg.set_colorkey((0, 0, 0))
 screen = pygame.display.set_mode((600, 800))
 pi = 3.14
-
+i = 0
+k = 0
 draw.rect(screen, (0, 255, 255), (0, 0, 600, 400))  # небо
 draw.rect(screen, (0, 128, 0), (0, 401, 600, 400))  # трава
 BLACK = (0, 0, 0,)
@@ -70,7 +71,7 @@ def dog_drawing():
     head()
 def dog(x, y, x_size, y_size, direct:bool):
     '''
-
+    :param direct: True=left, False=Right
     :param x: x-coordinate
     :param y: y-coordinate
     :param x_size: lenght of the dog
@@ -91,7 +92,7 @@ def body():
     draw the body of the dog
     :return:
     '''
-    draw.ellipse(SnoopDogg, (153, 102, 0), (50, 580, 120, 70))
+
     draw.ellipse(SnoopDogg, (153, 102, 0), (150, 590, 90, 45))
     draw.ellipse(SnoopDogg, (153, 102, 0), (200, 600, 50, 50))
     draw.ellipse(SnoopDogg, (153, 102, 0), (150, 580, 50, 50))
@@ -100,9 +101,11 @@ def body():
     draw.ellipse(SnoopDogg, (153, 102, 0), (220, 665, 30, 10))
     draw.ellipse(SnoopDogg, (153, 102, 0), (165, 645, 30, 10))
     draw.ellipse(SnoopDogg, (153, 102, 0), (115, 625, 35, 70))
-    draw.ellipse(SnoopDogg, (153, 102, 0), (40, 600, 35, 70))
+    draw.ellipse(SnoopDogg, (153, 102, 0), (40, 600, 35, 70))#left leg
     draw.ellipse(SnoopDogg, (153, 102, 0), (25, 665, 35, 15))
     draw.ellipse(SnoopDogg, (153, 102, 0), (100, 690, 35, 15))
+    draw.ellipse(SnoopDogg, (66, 170, 255), (60, 645, 50, 25))
+    draw.ellipse(SnoopDogg, (153, 102, 0), (50, 580, 120, 70))  # лужа
 
 def head():
     '''
@@ -127,6 +130,11 @@ def head():
     draw.ellipse(SnoopDogg, BLACK_KOSTYL, (110, 575, 5, 5))#tocka left
     draw.arc(SnoopDogg, BLACK_KOSTYL, (65, 590, 40, 20), pi, 2 * pi, 2)#mouth
     draw.polygon(SnoopDogg, WHITE, [[70, 605], [70, 615], [75, 610]])#left tooth
+    #animation is here
+    draw.ellipse(SnoopDogg, (66, 170, 255), (70, 615+i, 5, 5))
+    draw.ellipse(SnoopDogg, (66, 170, 255), (100, 615 + k, 5, 5))
+
+
     draw.polygon(SnoopDogg, WHITE, [[100, 605], [100, 615], [95, 610]])#right tooth
     draw.aalines(SnoopDogg, BLACK_KOSTYL, True, [[70, 605], [70, 615], [75, 610]])
     draw.aalines(SnoopDogg, BLACK_KOSTYL, True, [[100, 605], [100, 615], [95, 610]])
@@ -139,17 +147,24 @@ fence(0, 0, 200, 200)
 fence(10, 10, 100, 350)
 
 budka_plus_cep()
-dog_drawing()
-dog(320, 280, 300, 400, True)
-dog(400, -500, 1000, 1500, True)
-dog(0, -100, 600, 800, True)
-dog(-300, 50, 600, 800, False)
-
-pygame.display.update()
+def picture():
+    dog_drawing()
+    dog(320, 280, 300, 400, True)
+    dog(400, -500, 1000, 1500, True)
+    dog(0, -100, 600, 800, True)
+    dog(-300, 50, 600, 800, False)
 clock = pygame.time.Clock()
 finished = False
 
 while not finished:
+    i+=1
+    k+=1.5
+    if i == 35:
+        i = 0
+    if k == 36:
+        k = 0
+    picture()
+    pygame.display.update()
     clock.tick(FPS)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
